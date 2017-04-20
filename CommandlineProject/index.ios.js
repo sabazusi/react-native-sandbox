@@ -1,32 +1,48 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  NavigatorIOS,
+  TouchableHighlight
 } from 'react-native';
-
-export default class CommandlineProject extends Component {
+ 
+class Scene extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+        <TouchableHighlight onPress={() => {
+          const nextIndex = this.props.index +1;
+          this.props.navigator.push({
+            component: Scene,
+            title: 'Scene ' + nextIndex,
+            passProps: {
+              index: nextIndex
+            },
+          })
+        }}>
+        <Text>進む</Text>
+        </TouchableHighlight>
       </View>
+    )
+  }
+}
+ 
+export default class reactapp extends Component {
+  render() {
+    return (
+      <NavigatorIOS
+        style={{flex: 1}}
+        itemWrapperStyle={{flex: 1, paddingTop: 64}}
+        initialRoute={{
+          component: Scene,
+          title: 'Initial Scene',
+          passProps: {
+            index: 0,
+          },
+        }}
+      />
     );
   }
 }
@@ -34,20 +50,16 @@ export default class CommandlineProject extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    padding: 20,
+    backgroundColor: 'white'
   },
-  welcome: {
-    fontSize: 20,
+  button: {
     textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+    fontSize: 18,
+    marginBottom: 10,
+    marginTop:10,
+    color: 'blue'
+  }
 });
-
-AppRegistry.registerComponent('CommandlineProject', () => CommandlineProject);
+ 
+AppRegistry.registerComponent('CommandlineProject', () => reactapp);
