@@ -2,33 +2,51 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
+  Button,
   Text,
   View,
   NavigatorIOS,
-  TouchableHighlight
+  TouchableHighlight,
+  TextInput
 } from 'react-native';
- 
-class Scene extends Component {
+
+class SearchResult extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableHighlight onPress={() => {
-          const nextIndex = this.props.index +1;
-          this.props.navigator.push({
-            component: Scene,
-            title: 'Scene ' + nextIndex,
-            passProps: {
-              index: nextIndex
-            },
-          })
-        }}>
-        <Text>進む</Text>
-        </TouchableHighlight>
+        <Text>hai</Text>
+      </View>
+    );
+  }
+}
+class Search extends Component {
+  constructor() {
+    super();
+    this.state = {
+      value: ''
+    };
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <TextInput
+          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+          ref={(ref) => this.inputRef = ref}
+          onChangeText={(value) => this.setState({value})}
+        />
+        <Button
+          title="search"
+          onPress={() => this.props.navigator.push({
+            component: SearchResult,
+            title: `Result for ${this.state.value}`
+          })}
+        />
       </View>
     )
   }
 }
- 
+
 export default class reactapp extends Component {
   render() {
     return (
@@ -36,7 +54,7 @@ export default class reactapp extends Component {
         style={{flex: 1}}
         itemWrapperStyle={{flex: 1, paddingTop: 64}}
         initialRoute={{
-          component: Scene,
+          component: Search,
           title: 'Initial Scene',
           passProps: {
             index: 0,
@@ -61,5 +79,5 @@ const styles = StyleSheet.create({
     color: 'blue'
   }
 });
- 
+
 AppRegistry.registerComponent('CommandlineProject', () => reactapp);
