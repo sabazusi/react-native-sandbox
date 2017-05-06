@@ -10,9 +10,18 @@ import {
 } from 'react-native';
 import GiftedListView from 'react-native-gifted-listview';
 
-const fetchItem = (page) => {
+const fetchItem = (page, listViewRef) => {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(page === 1 ? initialData : continueData(page)), 1000);
+    setTimeout(() => {
+      if (page === 1) {
+        resolve(initialData.concat({title: 'now loading...'}));
+      } else {
+        const current = listViewRef._getRows();
+        const loading = current.pop();
+        listViewRef._setRows(current);
+        resolve(continueData(page).concat(loading));
+      }
+    }, 1000);
   });
 };
 
@@ -25,8 +34,8 @@ export default class ListViewTest extends Component {
     );
   }
 
-  _onFetch(page = 1, callback, options) {
-    fetchItem(page)
+  _onFetch = (page = 1, callback, options) => {
+    fetchItem(page, this.listViewRef)
       .then((data) => {
         callback(data, {
           allLoaded: false
