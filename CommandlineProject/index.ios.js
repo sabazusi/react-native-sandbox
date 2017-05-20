@@ -20,11 +20,27 @@ class SearchResult extends Component {
     );
   }
 }
+
+class ArrayDataView extends Component {
+  render() {
+    return (
+      <View>
+        {
+          this.props.data.map((num) => (
+            <Text>{num}</Text>
+          ))
+        }
+      </View>
+    );
+  }
+}
+
 class Search extends Component {
   constructor() {
     super();
     this.state = {
-      value: ''
+      value: '',
+      dataList: [1, 2, 3, 4, 5]
     };
   }
 
@@ -42,6 +58,14 @@ class Search extends Component {
             component: SearchResult,
             title: `Result for ${this.state.value}`
           })}
+        />
+
+        <View>
+          <ArrayDataView data={this.state.dataList} />
+        </View>
+        <Button
+          title="change data order"
+          onPress={() => this.setState({ dataList: [2, 3, 4, 5, 1] })}
         />
       </View>
     )
